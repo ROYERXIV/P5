@@ -1,24 +1,51 @@
 <?php session_start();
 $action = $_GET["action"];
 
-if($action=="accueil"){
+if ($action=="accueil") {
     include "view/homepage.php";
+}
+
+if ($action=="populaires") {
+    include "view/populaires.php";
+}
+
+if ($action=="top") {
+    include "view/top.php";
 }
 require "controller/userController.php";
 
-if($action=="saveInscription"){
+if ($action=="saveInscription") {
     saveInscription();
 }
 
-if($action=="login"){
+if ($action=="login") {
     login();
 }
 
-if($action=="deconnexion"){
+if ($action=="deconnexion") {
     deconnexion();
 }
 
 
-if($action=="testTemplate"){
+if ($action=="testTemplate") {
     include "view/template.php";
+}
+
+
+require "controller/gamesController.php";
+
+if ($action=="search") {
+    searchGames();
+}
+
+if ($action=="getGame") {
+    checkGame();
+}
+
+if ($action=="noteGame") {
+    noteGame();
+}
+
+if ($action=="addComment") {
+    addComment();
 }

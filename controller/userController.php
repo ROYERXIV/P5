@@ -1,16 +1,22 @@
 <?php
 require "model/UserModel.php";
 
-    function saveInscription(){
+    function saveInscription()
+    {
         $model = new UserModel();
         $model->createUser($_POST['pseudo'], $_POST['password']);
+        include "view/homepage.php";
     }
 
-    function login(){
+    function login()
+    {
         $model = new UserModel();
-        $model->logInUser($_POST['pseudo'],$_POST['password']);
+        $model->logInUser($_POST['pseudo'], $_POST['password']);
+        include "view/homepage.php";
     }
 
-    function deconnexion(){
+    function deconnexion()
+    {
         session_destroy();
+        header("Location: http://localhost/projet5/index.php?action=accueil");
     }
