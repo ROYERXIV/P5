@@ -2,7 +2,10 @@ const getGame = new Vue({
     el: "#app",
     data: {
         game: [],
-        note: "",
+        noteGraph: '',
+        noteGameplay: '',
+        noteAmbiance: '',
+        notePerso: '',
     },
     methods: {
         load() {
@@ -11,7 +14,7 @@ const getGame = new Vue({
                 )
                 .then((response) => response.json())
                 .then((response) => {
-                    this.game = response.results[0];
+                    this.game = response;
                 })
                 .catch((error) => console.log("Erreur : " + error));
         },

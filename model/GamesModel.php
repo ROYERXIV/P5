@@ -26,31 +26,39 @@ require_once "model/DbModel.php";
         public function getGame($gameName)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare(" SELECT gameslug FROM games WHERE gameslug = ? ");
+            $requete = $bdd->prepare(" SELECT * FROM games WHERE gameslug = ? ");
             $requete->execute([htmlspecialchars($gameName)]);
             $result = $requete->fetch();
             return $result;
         }
 
-        public function noteGame($gameName,$noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId)
+        public function noteGame($gameId,$noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare("INSERT INTO notes (gameslug, noteGraphismes, noteGameplay, noteAmbiance, notePerso, noteTotale, userId) VALUES (?,?,?,?,?,?,?)");
-            $requete->execute([$gameName,$noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId]);
+            $requete = $bdd->prepare("INSERT INTO notes (gameId, noteGraphismes, noteGameplay, noteAmbiance, notePerso, noteTotale, userId) VALUES (?,?,?,?,?,?,?)");
+            $requete->execute([$gameId,$noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId]);
         }
 
-        public function getNote($gameName)
+        public function getNote($gameId)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare("SELECT avg(noteGraphismes) as moyGraphismes, avg(noteGameplay) as moyGameplay, avg(noteAmbiance) as moyAmbiance, avg(notePerso) as moyPerso, avg(noteTotale) as moyTotale, userId FROM notes WHERE gameslug = ?");
-            $requete->execute([$gameName]);
+            $requete = $bdd->prepare("SELECT avg(noteGraphismes) as moyGraphismes, avg(noteGameplay) as moyGameplay, avg(noteAmbiance) as moyAmbiance, avg(notePerso) as moyPerso, avg(noteTotale) as moyTotale, userId FROM notes WHERE gameId = ?");
+            $requete->execute([$gameId]);
             return $requete->fetch();
         }
 
-        public function addComment($userId, $gameName,$commentaire)
+        public function addComment($pseudo,$userId, $gameId,$commentaire)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare("INSERT INTO commentaires (pseudo, gameslug, content) VALUES (?,?,?)");
-            $requete->execute([$userId,$gameName,$commentaire]);              
+            $requete = $bdd->prepare("INSERT INTO commentaires (pseudo, userId, gameId, content) VALUES (?,?,?,?)");
+            $requete->execute([$pseudo,$userId,$gameId,$commentaire]);              
+        }
+
+        public function getComments($gameId)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("SELECT * FROM commentaires WHERE gameId = ?");
+            $requete->execute([$gameId]);
+            return $requete;
         }
     }

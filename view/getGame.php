@@ -1,5 +1,5 @@
-<?php $gameSlug = $gameSlug['gameslug'];?>
-<?php $title = 'JEU' ;?>
+
+<?php $title = $gameData['gameslug'] ;?>
 <?php ob_start() ;?>
 
 <div id="app">
@@ -11,24 +11,30 @@
     <div class="game-page-infos">
 
         <div id="note">
-            <form method="post" action="index.php?action=noteGame&game=<?=$gameSlug;?>">
+            <form method="post" action="index.php?action=noteGame&gameId=<?=$gameData['gameId'];?>">
             <div class="form-group">
                 <label for="noteGraphismes"> Graphismes :</label>
-                <input type="range" name="noteGraphismes" id="noteGraphismes" min="0" max="5" value="3">
+                <input type="range" name="noteGraphismes" id="noteGraphismes" min="0" max="5" v-model="noteGraph">
+                <p>{{noteGraph}}</p>
             </div>
                 <div class="form-group">
                 <label for="noteGameplay"> Gameplay :</label>
-                <input type="range" name="noteGameplay" id="noteGameplay" min="0" max="5" value="0">
+                <input type="range" name="noteGameplay" id="noteGameplay" min="0" max="5" value="0" v-model="noteGameplay">
+                <p>{{noteGameplay}}</p>
             </div>
             <div class="form-group">
                 <label for="noteAmbiance"> Ambiance :</label>
-                <input type="range" name="noteAmbiance" id="noteAmbiance" min="0" max="5" value="0">
+                <input type="range" name="noteAmbiance" id="noteAmbiance" min="0" max="5" value="0" v-model="noteAmbiance">
+                <p>{{noteAmbiance}}</p>
             </div>
             <div class="form-group">
                 <label for="notePerso"> Note perso :</label>
-                <input type="range" name="notePerso" id="notePerso" min="0" max="5" value="0">
+                <input type="range" name="notePerso" id="notePerso" min="0" max="5" value="0" v-model="notePerso">
+                <p>{{notePerso}}</p>
             </div>
-            <input type="hidden" name="userId" value="<?= $_SESSION['pseudo'];?>">
+            <input type="hidden" name="userId" value="<?= $_SESSION['userId'];?>">
+            <input type="hidden" name="gameSlug" value="<?= $gameData['gameslug'];?>">
+            <?php var_dump($gameData['gameslug']);?>
             <button type="submit" class="btn btn-danger">Noter</button>
             </form>
 
@@ -46,10 +52,15 @@
         <button class="btn" data-toggle="modal" data-target="#commentPopUp"> Ecrire un commentaire </button>
     </div>
     <div class="game-page-comments">
+    <?php foreach($commentsData as $comment){
+        ;?>
         <div class="comment">
-            <p class="comment-user-name">Pseudo</p>
-            <p class="comment-content">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi esse ab quod officia dolor ducimus enim odit reprehenderit hic consequuntur. Perspiciatis earum amet similique voluptatibus minus ab tenetur reiciendis ipsa.</p>
+            <p class="comment-user-name"><?=$comment['pseudo'];?></p>
+            <p class="comment-content"><?=$comment['content'];?></p>
         </div>
+        <?php
+    }
+    ;?>
     </div>
     <div class="modal fade" id="commentPopUp" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -64,8 +75,9 @@
                     <form id="form-comment" action="index.php?action=addComment" method="post">
                         <div class="form-group">
                             <textarea class="form-control" name="commentaire" id="inputCommentaire" placeholder="Tapez votre commentaire..."></textarea>
-                            <input type="hidden" value="<?= $gameSlug;?>" name="game">
+                            <input type="hidden" value="<?= $gameData['gameId'];?>" name="gameId">
                             <input type="hidden" value="<?= $_SESSION['pseudo'];?>" name="pseudo">
+                            <input type="hidden" value="<?= $gameData['gameslug'];?>" name="gameSlug">
                         </div>
                         <button type="submit" class="btn btn-primary">Envoyer</button>
                     </form>
@@ -75,7 +87,8 @@
     </div>
 
 </div>
-<script> apiUrl = "https://api.rawg.io/api/games?search=<?=$gameSlug;?>"</script>
+<script> apiUrl = "https://api.rawg.io/api/games/<?=$gameData['gameslug'];?>"</script>
 <?php $content = ob_get_clean();?>
 <?php include "view/template.php";?>
 <script src="public/js/getGame.js"></script>
+

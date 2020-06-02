@@ -11,12 +11,13 @@ require_once "model/DbModel.php";
 
         public function logInUser($pseudo, $password){
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare(" SELECT pseudo, password as hash FROM users where pseudo = ? ");
+            $requete = $bdd->prepare(" SELECT pseudo, userID, password as hash FROM users where pseudo = ? ");
             $requete->execute([htmlspecialchars($pseudo)]);
             $results = $requete->fetch();
             $hash = $results['hash'];
             if (password_verify($password, $hash)) {
                 $_SESSION['pseudo'] = $pseudo;
+                $_SESSION['userId'] = $results['userID'];
             } else {
                 echo " Identifiants incorrects";
             }

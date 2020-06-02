@@ -43,7 +43,7 @@ const getGames = new Vue({
       this.pageId--;
       this.load();
     },
-    getPage(pageDiff){
+    getPage(pageDiff) {
       this.pageId = this.pageId + pageDiff;
       this.load();
     }
@@ -52,32 +52,3 @@ const getGames = new Vue({
     this.load();
   }
 });
-
-// const vue = new Vue({
-//   el: "#app",
-//   data: {
-//     games: [],
-//     pageId: 1,
-//     url: "apiUrl" +pageId+ "&page_size=18",
-
-//   },
-//   methods: {
-//     load() {
-//       this.myFetch = fetch(
-//           url
-//         )
-//         .then((response) => response.json())
-//         .then((response) => {
-//           this.games = response.results;
-//         })
-//         .catch((error) => console.log("Erreur : " + error));
-//     },
-//     nextPage() {
-//       this.pageId++;
-//       this.load();
-//     },
-//   },
-//   mounted() {
-//     this.load();
-//   }
-// });

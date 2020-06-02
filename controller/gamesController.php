@@ -12,14 +12,19 @@ require "model/GamesModel.php";
 
     function checkGame(){
         if(isset($_GET['game'])){
-            $gameName = $_GET['game'];
+            $gameSlug = $_GET['game'];
             $model = new GamesModel();
-            $gameExist = $model->checkGame($gameName);
+            $gameExist = $model->checkGame($gameSlug);
             if($gameExist == true){
-                getGame($gameName);
+                getGame($gameSlug);
             } else {
-                $model->addGame($gameName);
-                getGame($gameName);
+                $jsonData = file_get_contents("https://api.rawg.io/api/games/$gameSlug");
+                var_dump($jsonData);
+                $gameData = json_decode($jsonData,true);
+                var_dump($gameData);
+                var_dump($gameData['background_image']);
+                // $model->addGame($gameSlug);
+                // getGame($gameSlug);
             } 
         }
         else{
@@ -27,17 +32,19 @@ require "model/GamesModel.php";
         }        
     }
 
-    function getGame($gameName){
+    function getGame($gameSlug){
         $model = new GamesModel();
-        $gameSlug = $model->getGame($gameName);
-        $noteData = $model->getNote($gameName);
-        // var_dump($noteData);
+        $gameData = $model->getGame($gameSlug);
+        $gameId = $gameData['gameId'];
+        $noteData = $model->getNote($gameId);
+        $commentsData = $model->getComments($gameId);
         include "view/getGame.php";
     }
 
     function noteGame(){
-        if(isset($_GET['game'])){
-            $gameName = $_GET['game'];
+        if(isset($_GET['gameId'])){
+            $gameId = $_GET['gameId'];
+            $gameSlug= $_POST['gameSlug'];
             $noteGraphismes = $_POST['noteGraphismes'];
             $noteGameplay = $_POST['noteGameplay'];
             $noteAmbiance = $_POST['noteAmbiance'];
@@ -45,18 +52,21 @@ require "model/GamesModel.php";
             $noteTotale = $noteGraphismes + $noteGameplay + $noteAmbiance + $notePerso;
             $userId = $_POST['userId'];
             $model = new GamesModel();
-            $model->noteGame($gameName, $noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId);
+            $model->noteGame($gameId, $noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId);
+            header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameSlug");
         }
     }
 
     function addComment(){
-        if(isset($_POST['game']) && isset($_SESSION['pseudo'])){
-            $userId = $_SESSION['pseudo'];
+        if(isset($_POST['gameId']) && isset($_SESSION['pseudo'])){
+            $pseudo = $_SESSION['pseudo'];
+            $userId = $_SESSION['userId'];
             $commentaire = $_POST['commentaire'];
-            $gameName = $_POST['game'];
+            $gameId = $_POST['gameId'];
+            $gameSlug = $_POST['gameSlug'];
             $model = new GamesModel();
-            $model->addComment($userId,$gameName,$commentaire);
-            header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameName"); 
+            $model->addComment($pseudo,$userId,$gameId,$commentaire);
+            header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameSlug"); 
 
         }
     }

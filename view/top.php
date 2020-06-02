@@ -9,7 +9,7 @@
                     <img class="card-img-top game-img" v-bind:src="game.background_image" alt="Card image cap">
             </div> 
                 <div class="card-body">
-                    <h5 class="card-title game-title"><a :href="'index.php?action=getGame&game='+game.name">{{game.name}}</a></h5>
+                    <h5 class="card-title game-title"><a :href="'index.php?action=getGame&game='+game.slug">{{game.name}}</a></h5>
                     <ul>
                         <li v-for="platform in game.parent_platforms" class="platformIcons">
                             <img v-bind:src="'public/img/'+platform.platform.name+'.png'" alt="" v-bind:title="platform.platform.name">

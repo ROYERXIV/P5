@@ -1,7 +1,6 @@
 <?php $title = "Populaires" ;?>
 <?php ob_start();?>
 
-
 <div class="container latest-games" id="app">
     <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-12" v-for="game in games">
@@ -38,3 +37,4 @@
 <script> apiUrl = "https://api.rawg.io/api/games?dates=2020-05-05,2021-12-31&ordering=-added&page_size=18&page="</script>
 <?php $content = ob_get_clean();?>
 <?php include "view/template.php";?>
+<script src="public/js/getGames.js"></script>
