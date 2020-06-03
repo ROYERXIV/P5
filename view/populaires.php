@@ -7,7 +7,7 @@
             <div class="card">
                 <div id="game-img-container">
                     <img class="card-img-top game-img" v-bind:src="game.background_image" alt="Card image cap">
-            </div> 
+                </div> 
                 <div class="card-body">
                     <h5 class="card-title game-title">{{game.name}}</h5>
                     <ul>

@@ -46,7 +46,7 @@
                 </li>
             </ul>
         </div>
-        <p> Description du jeu</p>
+        <p :content="strippedContent">{{game.description}}</p>
     </div>
     <div>
         <button class="btn" data-toggle="modal" data-target="#commentPopUp"> Ecrire un commentaire </button>

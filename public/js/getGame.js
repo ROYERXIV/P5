@@ -21,5 +21,6 @@ const getGame = new Vue({
     },
     mounted() {
         this.load();
-    }
+    },
+
 })

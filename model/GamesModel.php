@@ -16,11 +16,11 @@ require_once "model/DbModel.php";
             }
         }
 
-        public function addGame($gameName)
+        public function addGame($gameSlug,$gameName,$gameImg,$gameDescription)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare(" INSERT INTO games (gameslug) VALUES (?) ");
-            $requete->execute([htmlspecialchars($gameName)]);
+            $requete = $bdd->prepare(" INSERT INTO games (gameslug, gameName, gameImg, gameDescription) VALUES (?,?,?,?) ");
+            $requete->execute([htmlspecialchars($gameSlug),$gameName,$gameImg,strip_tags($gameDescription)]);
         }
 
         public function getGame($gameName)

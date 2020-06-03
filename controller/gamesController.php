@@ -1,8 +1,9 @@
 <?php
 require "model/GamesModel.php";
 
-    function searchGames(){
-        if(isset($_POST['game'])){
+    function searchGames()
+    {
+        if (isset($_POST['game'])) {
             $gameName = $_POST['game'];
             include "view/searchGames.php";
         } else {
@@ -10,29 +11,30 @@ require "model/GamesModel.php";
         }
     }
 
-    function checkGame(){
-        if(isset($_GET['game'])){
+    function checkGame()
+    {
+        if (isset($_GET['game'])) {
             $gameSlug = $_GET['game'];
             $model = new GamesModel();
             $gameExist = $model->checkGame($gameSlug);
-            if($gameExist == true){
+            if ($gameExist == true) {
                 getGame($gameSlug);
             } else {
                 $jsonData = file_get_contents("https://api.rawg.io/api/games/$gameSlug");
-                var_dump($jsonData);
-                $gameData = json_decode($jsonData,true);
-                var_dump($gameData);
-                var_dump($gameData['background_image']);
-                // $model->addGame($gameSlug);
-                // getGame($gameSlug);
-            } 
-        }
-        else{
+                $gameData = json_decode($jsonData, true);
+                $gameName = $gameData['name'];
+                $gameImg = $gameData['background_image'];
+                $gameDescription = $gameData['description'];
+                $model->addGame($gameSlug, $gameName, $gameImg, $gameDescription);
+                getGame($gameSlug);
+            }
+        } else {
             include "view/homepage.php";
-        }        
+        }
     }
 
-    function getGame($gameSlug){
+    function getGame($gameSlug)
+    {
         $model = new GamesModel();
         $gameData = $model->getGame($gameSlug);
         $gameId = $gameData['gameId'];
@@ -41,8 +43,9 @@ require "model/GamesModel.php";
         include "view/getGame.php";
     }
 
-    function noteGame(){
-        if(isset($_GET['gameId'])){
+    function noteGame()
+    {
+        if (isset($_GET['gameId'])) {
             $gameId = $_GET['gameId'];
             $gameSlug= $_POST['gameSlug'];
             $noteGraphismes = $_POST['noteGraphismes'];
@@ -57,17 +60,16 @@ require "model/GamesModel.php";
         }
     }
 
-    function addComment(){
-        if(isset($_POST['gameId']) && isset($_SESSION['pseudo'])){
+    function addComment()
+    {
+        if (isset($_POST['gameId']) && isset($_SESSION['pseudo'])) {
             $pseudo = $_SESSION['pseudo'];
             $userId = $_SESSION['userId'];
             $commentaire = $_POST['commentaire'];
             $gameId = $_POST['gameId'];
             $gameSlug = $_POST['gameSlug'];
             $model = new GamesModel();
-            $model->addComment($pseudo,$userId,$gameId,$commentaire);
-            header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameSlug"); 
-
+            $model->addComment($pseudo, $userId, $gameId, $commentaire);
+            header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameSlug");
         }
     }
-    
