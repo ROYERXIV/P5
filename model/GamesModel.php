@@ -20,7 +20,7 @@ require_once "model/DbModel.php";
         {
             $bdd = $this->dbConnect();
             $requete = $bdd->prepare(" INSERT INTO games (gameslug, gameName, gameImg, gameDescription) VALUES (?,?,?,?) ");
-            $requete->execute([htmlspecialchars($gameSlug),$gameName,$gameImg,strip_tags($gameDescription)]);
+            $requete->execute([htmlspecialchars($gameSlug),$gameName,$gameImg,$gameDescription]);
         }
 
         public function getGame($gameName)
@@ -60,5 +60,12 @@ require_once "model/DbModel.php";
             $requete = $bdd->prepare("SELECT * FROM commentaires WHERE gameId = ?");
             $requete->execute([$gameId]);
             return $requete;
+        }
+
+        public function addPlatforms($gameId, $platformSlug, $platformName)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("INSERT INTO plateformes (id, slug, platformName) VALUES (?,?,?)");
+            $requete->execute([$gameId, $platformSlug, $platformName]);
         }
     }

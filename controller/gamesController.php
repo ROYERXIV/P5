@@ -22,6 +22,10 @@ require "model/GamesModel.php";
             } else {
                 $jsonData = file_get_contents("https://api.rawg.io/api/games/$gameSlug");
                 $gameData = json_decode($jsonData, true);
+                // var_dump($gameData['parent_platforms']);
+                foreach($gameData['parent_platforms'] as $platform){
+                    echo $platform['platform']['slug'];
+                };
                 $gameName = $gameData['name'];
                 $gameImg = $gameData['background_image'];
                 $gameDescription = $gameData['description'];
@@ -42,6 +46,7 @@ require "model/GamesModel.php";
         $commentsData = $model->getComments($gameId);
         include "view/getGame.php";
     }
+
 
     function noteGame()
     {

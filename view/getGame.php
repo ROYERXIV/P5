@@ -5,8 +5,8 @@
 <div id="app">
 <h2>{{game.name}}</h2>
 <p> Sortie: {{game.released}}</p>
-    <div class="game-page-img">
-        <img v-bind:src="game.background_image">
+    <div class="game-page-img" style="background-position: center; background-size: cover; height:500px; width: 60%;" v-bind:style="{backgroundImage:'url('+game.background_image+')'}">
+        <!-- <img v-bind:src="game.background_image"> -->
     </div>
     <div class="game-page-infos">
 
@@ -46,7 +46,7 @@
                 </li>
             </ul>
         </div>
-        <p :content="strippedContent">{{game.description}}</p>
+        <p v-html="game.description"></p>
     </div>
     <div>
         <button class="btn" data-toggle="modal" data-target="#commentPopUp"> Ecrire un commentaire </button>
