@@ -23,13 +23,28 @@ require "model/GamesModel.php";
                 $jsonData = file_get_contents("https://api.rawg.io/api/games/$gameSlug");
                 $gameData = json_decode($jsonData, true);
                 // var_dump($gameData['parent_platforms']);
-                foreach($gameData['parent_platforms'] as $platform){
-                    echo $platform['platform']['slug'];
+                foreach ($gameData['parent_platforms'] as $platform) {
+                    $platformSlug = $platform['platform']['slug'];
+                    $platformName = $platform['platform']['name'];
+                    $platformExist = $model->checkPlatform($platformSlug);
+                    if ($platformExist == false) {
+                        $model->addPlatform($platformSlug, $platformName);
+                    };
                 };
                 $gameName = $gameData['name'];
                 $gameImg = $gameData['background_image'];
                 $gameDescription = $gameData['description'];
                 $model->addGame($gameSlug, $gameName, $gameImg, $gameDescription);
+                foreach ($gameData['parent_platforms'] as $platform) {
+                    $platformSlug = $platform['platform']['slug'];
+                    $platformId = $model->getPlatform($platformSlug);
+                    $platformId = $platformId['id'];
+                    var_dump($platformSlug);
+                    var_dump($platformId);
+                    $gameId = $model->getGame($gameSlug);
+                    $gameId = $gameId['gameId'];
+                    $model->addGamePlatform($gameId, $platformId);
+                }
                 getGame($gameSlug);
             }
         } else {

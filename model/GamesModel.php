@@ -16,7 +16,7 @@ require_once "model/DbModel.php";
             }
         }
 
-        public function addGame($gameSlug,$gameName,$gameImg,$gameDescription)
+        public function addGame($gameSlug, $gameName, $gameImg, $gameDescription)
         {
             $bdd = $this->dbConnect();
             $requete = $bdd->prepare(" INSERT INTO games (gameslug, gameName, gameImg, gameDescription) VALUES (?,?,?,?) ");
@@ -32,7 +32,7 @@ require_once "model/DbModel.php";
             return $result;
         }
 
-        public function noteGame($gameId,$noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId)
+        public function noteGame($gameId, $noteGraphismes, $noteGameplay, $noteAmbiance, $notePerso, $noteTotale, $userId)
         {
             $bdd = $this->dbConnect();
             $requete = $bdd->prepare("INSERT INTO notes (gameId, noteGraphismes, noteGameplay, noteAmbiance, notePerso, noteTotale, userId) VALUES (?,?,?,?,?,?,?)");
@@ -47,11 +47,11 @@ require_once "model/DbModel.php";
             return $requete->fetch();
         }
 
-        public function addComment($pseudo,$userId, $gameId,$commentaire)
+        public function addComment($pseudo, $userId, $gameId, $commentaire)
         {
             $bdd = $this->dbConnect();
             $requete = $bdd->prepare("INSERT INTO commentaires (pseudo, userId, gameId, content) VALUES (?,?,?,?)");
-            $requete->execute([$pseudo,$userId,$gameId,$commentaire]);              
+            $requete->execute([$pseudo,$userId,$gameId,$commentaire]);
         }
 
         public function getComments($gameId)
@@ -62,10 +62,38 @@ require_once "model/DbModel.php";
             return $requete;
         }
 
-        public function addPlatforms($gameId, $platformSlug, $platformName)
+        public function checkPlatform($platformSlug)
         {
             $bdd = $this->dbConnect();
-            $requete = $bdd->prepare("INSERT INTO plateformes (id, slug, platformName) VALUES (?,?,?)");
-            $requete->execute([$gameId, $platformSlug, $platformName]);
+            $requete = $bdd->prepare("SELECT slug FROM plateformes WHERE slug = ?");
+            $requete->execute([$platformSlug]);
+            $result = $requete->fetch();
+            if ($result['slug'] == $platformSlug) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function addPlatform($platformSlug, $platformName)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("INSERT INTO plateformes (slug, platformName) VALUES (?,?)");
+            $requete->execute([$platformSlug, $platformName]);
+        }
+
+        public function getPlatform($platformSlug)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("SELECT id FROM plateformes WHERE slug = ?");
+            $requete->execute([$platformSlug]);
+            return $requete->fetch();
+        }
+
+        public function addGamePlatform($gameId, $platformId)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("INSERT INTO game_platform (idGame,idPlatform) VALUES (?,?)");
+            $requete->execute([$gameId,$platformId]);
         }
     }
