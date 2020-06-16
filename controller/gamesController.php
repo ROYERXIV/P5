@@ -93,3 +93,12 @@ require "model/GamesModel.php";
             header("Location: http://localhost/projet5/index.php?action=getGame&game=$gameSlug");
         }
     }
+
+
+    function getTopGames()
+    {
+
+    }
+
+
+    // penser a integrer la lib 
