@@ -18,5 +18,5 @@ require "model/UserModel.php";
     function deconnexion()
     {
         session_destroy();
-        header("Location: http://localhost/projet5/index.php?action=accueil");
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }

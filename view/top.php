@@ -6,22 +6,22 @@
         <div class="col-lg-4 col-md-6 col-sm-12" v-for="game in games">
             <div class="card">
                 <div id="game-img-container">
-                    <img class="card-img-top game-img" v-bind:src="game.background_image" alt="Card image cap">
+                    <img class="card-img-top game-img" v-bind:src="game.gameImg" alt="Card image cap">
             </div> 
                 <div class="card-body">
-                    <h5 class="card-title game-title"><a :href="'index.php?action=getGame&game='+game.slug">{{game.name}}</a></h5>
+                    <h5 class="card-title game-title"><a :href="'index.php?action=getGame&game='+game.gameslug">{{game.gameName}}</a></h5>
                     <ul>
-                        <li v-for="platform in game.parent_platforms" class="platformIcons">
-                            <img v-bind:src="'public/img/'+platform.platform.name+'.png'" alt="" v-bind:title="platform.platform.name">
+                        <li v-for="platform in game.plateformes" class="platformIcons">
+                            <img v-bind:src="'public/img/'+platform.platformName+'.png'" alt="" v-bind:title="platform.platformName">
                         </li>
                     </ul>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <p v-html=game.gameDescription class="card-text gameDescription"></p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="pages-nav">
+    <!-- <div class="pages-nav">
         <a v-if="pageId > 1" @click="prevPage()" href="#top"> Page precedente </a>
         <a v-if="pageId > 4" @click="getPage(0, pageId= 1)" href="#top"> 1 </a>
         <a v-if="pageId > 3" @click="getPage(-3)" href="#top"> {{pageId - 3 }}</a>
@@ -32,11 +32,12 @@
         <a @click="getPage(2)" href="#top"> {{pageId + 2 }}</a>
         <a @click="getPage(3)" href="#top"> {{pageId + 3 }}</a>
         <a @click="nextPage()" href="#top"> Page Suivante </a>    
-    </div>
+    </div> -->
 </div>
 
-<script> apiUrl = "https://api.rawg.io/api/games?dates=2010-01-01,2020-12-31&ordering=-rating&page_size=18&page="</script>
 <?php $content = ob_get_clean();?>
 <?php include "view/template.php";?>
+<script>  var gamesData = <?= $games;?> </script>
 <script src="public/js/getGames.js"></script>
+
 

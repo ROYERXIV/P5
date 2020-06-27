@@ -52,8 +52,6 @@
                                 echo "<div id=\"user-home-panel\">
                             <p id=\"user-dropdown\"> <span class=\"material-icons account-icon\">account_circle</span>".$_SESSION['pseudo']."</p>
                             <div id='user-dropdown-content'>
-                                <a> Profil</a>
-                                <a> Mes jeux</a>
                                 <a href=\"index.php?action=deconnexion\"> Deconnexion </a>
                             </div>
                           </div>";
@@ -126,6 +124,13 @@
     <section id="main">
         <?= $content ?>
     </section>
+    <div id="footer">
+    <p> Ce site est un projet fictif pour OpenClassrooms</p>
+    <?php if(isset($_SESSION['userId'])&& $_SESSION['userId'] ==1){
+        echo "<a role='button' class='danger' href='index.php?action=adminPanel'>Administration</a>";
+    }
+    ;?>
+    </div>
 
 
 

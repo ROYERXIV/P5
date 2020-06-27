@@ -22,7 +22,7 @@
                     <img class="card-img-top game-img" v-bind:src="game.background_image" alt="Card image cap">
                 </div> 
                 <div class="card-body">
-                    <h5 class="card-title game-title">{{game.name}}</h5>
+                    <h5 class="card-title game-title"><a :href="'index.php?action=getGame&game='+game.slug">{{game.name}}</a></h5>
                     <ul>
                         <li v-for="platform in game.parent_platforms" class="platformIcons">
                             <img v-bind:src="'public/img/'+platform.platform.name+'.png'" alt="" v-bind:title="platform.platform.name">
@@ -50,4 +50,4 @@
 <?php $content = ob_get_clean();?>
 <?php include "view/template.php";?>
 <script> apiUrl = "https://api.rawg.io/api/games?dates=2020-05-05,2021-12-31&ordering=-added&page_size=18&page="</script>
-<script src="public/js/getGames.js"></script>
+<script src="public/js/getGamesApi.js"></script>

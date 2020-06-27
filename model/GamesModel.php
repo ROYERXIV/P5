@@ -96,4 +96,65 @@ require_once "model/DbModel.php";
             $requete = $bdd->prepare("INSERT INTO game_platform (idGame,idPlatform) VALUES (?,?)");
             $requete->execute([$gameId,$platformId]);
         }
+
+        public function getTopGames($page)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("SELECT g.*, avg(noteGraphismes+noteGameplay+noteAmbiance+notePerso) as note FROM games AS g INNER JOIN notes AS n ON g.gameId = n.gameId group by g.gameId ORDER BY noteTotale DESC LIMIT ?,10");
+            $requete->execute([$page*10]);
+            $result = $requete->fetchAll(PDO::FETCH_ASSOC);
+            foreach($result as &$game){
+                $requete2 = $bdd->prepare("SELECT * FROM plateformes p INNER JOIN game_platform gp ON p.id=gp.idPlatform WHERE idGame=?");
+                $requete2->execute([$game["gameId"]]);
+                $game['plateformes']=$requete2->fetchAll(PDO::FETCH_ASSOC);
+                $game['gameDescription'] = strip_tags($game['gameDescription']);
+            }
+            return json_encode($result);
+        }
+        
+        public function getPopularGames()
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("SELECT g.*, (SELECT count(*) FROM commentaires WHERE gameId=g.gameId) AS nbcom FROM games g ORDER BY nbcom DESC");
+            $requete->execute();
+            $result = $requete->fetchAll(PDO::FETCH_ASSOC);
+            foreach($result as &$game){
+                $requete2 = $bdd->prepare("SELECT * FROM plateformes p INNER JOIN game_platform gp ON p.id=gp.idPlatform WHERE idGame=?");
+                $requete2->execute([$game["gameId"]]);
+                $game['plateformes']=$requete2->fetchAll(PDO::FETCH_ASSOC);
+                $game['gameDescription'] = strip_tags($game['gameDescription']);
+            }
+            return json_encode($result);
+        }
+
+        public function reportComment($commentId)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("UPDATE commentaires SET isReported = 1 WHERE commentId = ?");
+            $requete->execute([$commentId]);
+        }
+    
+        public function getReportedComments()
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->query("SELECT * FROM commentaires WHERE isReported = 1");
+            return $requete;
+        }
+    
+        public function approveComment($commentId)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("UPDATE commentaires SET isReported = 0 WHERE commentId = ?");
+            $requete->execute([$commentId]);
+        }
+    
+        public function deleteComment($commentId)
+        {
+            $bdd = $this->dbConnect();
+            $requete = $bdd->prepare("DELETE FROM commentaires WHERE commentId = ?");
+            $requete->execute([$commentId]);
+        }    
     }
+
+
+        

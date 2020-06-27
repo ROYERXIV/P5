@@ -39,8 +39,6 @@ require "model/GamesModel.php";
                     $platformSlug = $platform['platform']['slug'];
                     $platformId = $model->getPlatform($platformSlug);
                     $platformId = $platformId['id'];
-                    var_dump($platformSlug);
-                    var_dump($platformId);
                     $gameId = $model->getGame($gameSlug);
                     $gameId = $gameId['gameId'];
                     $model->addGamePlatform($gameId, $platformId);
@@ -97,8 +95,57 @@ require "model/GamesModel.php";
 
     function getTopGames()
     {
+        if(isset($_GET['page'])){
+            $page = $_GET['page'];
+        }else{
+            $page=0;
+        }
+        $model = new GamesModel();
+        $games = $model->getTopGames($page);
+        include 'view/top.php';
+    }
+
+    function getPopularGames()
+    {
+        $model = new GamesModel();
+        $games = $model->getPopularGames();
+        include 'view/populaires.php';
+    }
+
+    function getAdminPanel()
+    {
+        $model = new GamesModel();
+        $reportedComments = $model->getReportedComments();
+        include 'view/adminPanel.php';
+    }
+
+    function reportComment(){
+        if(isset($_GET['commentId'])){
+            $commentId = $_GET['commentId'];
+            $model = new GamesModel();
+            $model->reportComment($commentId);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
 
     }
 
+    function deleteComment(){
+        if (isset($_GET['commentId'])) {
+            $commentId = $_GET['commentId'];
+            $model = new GamesModel();
+            $model->deleteComment($commentId);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
+    }
 
-    // penser a integrer la lib 
+    function approveComment(){
+        if (isset($_GET['commentId'])) {
+            $commentId = $_GET['commentId'];
+            $model = new GamesModel();
+            $model->approveComment($commentId);
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+        }
+    }
+    
+
+

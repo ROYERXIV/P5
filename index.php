@@ -5,13 +5,6 @@ if ($action=="accueil") {
     include "view/homepage.php";
 }
 
-if ($action=="populaires") {
-    include "view/populaires.php";
-}
-
-if ($action=="top") {
-    include "view/top.php";
-}
 require "controller/userController.php";
 
 if ($action=="saveInscription") {
@@ -24,11 +17,6 @@ if ($action=="login") {
 
 if ($action=="deconnexion") {
     deconnexion();
-}
-
-
-if ($action=="testTemplate") {
-    include "view/template.php";
 }
 
 
@@ -48,4 +36,28 @@ if ($action=="noteGame") {
 
 if ($action=="addComment") {
     addComment();
+}
+
+if ($action=="top") {
+    getTopGames();
+}
+
+if ($action=="populaires") {
+    getPopularGames();
+}
+
+if ($action=="adminPanel"){
+    getAdminPanel();
+}
+
+if($action=="reportComment"){
+    reportComment();
+}
+
+if($action=="deleteComment"){
+    deleteComment();
+}
+
+if($action=="approveComment"){
+    approveComment();
 }

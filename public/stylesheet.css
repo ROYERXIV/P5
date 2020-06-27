@@ -6,6 +6,19 @@ body {
     box-sizing: border-box;
     margin: 0;
     background-color: #393E46;
+    position: relative;
+}
+
+#footer {
+    display: flex;
+    background-color : #222831;
+    height: 70px;
+    margin: 15px 0 0 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 999;
 }
 
 li {
@@ -161,21 +174,53 @@ button {
     color: white;
 }
 
+h1 {
+    text-align: center;
+}
+
+/* #entete {
+    width: 100%;
+} */
+
 .platforms ul {
     display: flex;
     flex-direction: row;
     padding: 0;
 }
 
+#game-presentation {
+    display: flex;
+    background-color: #393E46;
+    justify-content: center;
+}
 .game-page-img {
-    width: 100%;
     text-align: center;
-    background-color: #222831;
 }
 
 .game-page-img img {
     max-height: 500px;
     max-width: 100%;
+}
+
+#sidePanel {
+    padding: 5px 25px 5px 25px;
+    justify-content: space-around;
+    background-color: #222831;
+    max-height: 500px;
+}
+
+.description {
+    background-color: #222831;
+    padding: 5px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+.comment {
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 5px;
+    background-color: #222831;
 }
 
 /**************** MAIN SECTION ******************/
@@ -224,6 +269,14 @@ button {
 
 .platformIcons img {
     max-width: 25px;
+}
+
+.gameDescription {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+        -webkit-box-orient: vertical;
 }
 
 .pages-nav {
